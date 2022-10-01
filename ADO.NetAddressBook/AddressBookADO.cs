@@ -61,5 +61,68 @@ namespace ADO.NetAddressBook
                 sqlConnect.Close();
             }
         }
+        public void AddContact()
+        {
+
+            SqlConnection sqlConnect = new SqlConnection(connectionString);
+            try
+            {
+                using (sqlConnect)
+                {
+                    sqlConnect.Open();
+
+                    SqlCommand com = new SqlCommand("AddContact", sqlConnect);
+                    //query, sqlconnection
+                    com.CommandType = CommandType.StoredProcedure;
+                    Console.WriteLine("Enter FirstName");
+                    person.FirstName = Console.ReadLine();
+                    Console.WriteLine("Enter Last Name");
+                    person.LastName = Console.ReadLine();
+                    Console.WriteLine("Enter Address");
+                    person.Address = Console.ReadLine();
+                    Console.WriteLine("Enter City");
+                    person.City = Console.ReadLine();
+                    Console.WriteLine("Enter State");
+                    person.State = Console.ReadLine();
+                    Console.WriteLine("Enter Zip Code");
+                    person.ZipCode = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter PhoeNuber");
+                    person.PhoneNumber = long.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter Email");
+                    person.EmailId = Console.ReadLine();
+                    Console.WriteLine("Enter Catagory");
+                    person.Type = Console.ReadLine();
+                    com.Parameters.AddWithValue("@FirstName", person.FirstName);
+                    com.Parameters.AddWithValue("@LastName", person.LastName);
+                    com.Parameters.AddWithValue("@Address", person.Address);
+                    com.Parameters.AddWithValue("@City", person.City);
+                    com.Parameters.AddWithValue("@State", person.State);
+                    com.Parameters.AddWithValue("@Zip", person.ZipCode);
+                    com.Parameters.AddWithValue("@PhoneNumber", person.PhoneNumber);
+                    com.Parameters.AddWithValue("@Email", person.EmailId);
+                    com.Parameters.AddWithValue("@Catagory", person.Type);
+
+                    int affRows = com.ExecuteNonQuery();    //returns num of affected rows after query execution
+                    sqlConnect.Close();
+                    if (affRows >= 1)
+                    {
+                        Console.WriteLine("Employee added successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Employee not added..");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+            }
+            finally
+            {
+                sqlConnect.Close();
+            }
+        }
     }
 }
