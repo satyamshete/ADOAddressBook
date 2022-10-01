@@ -124,5 +124,49 @@ namespace ADO.NetAddressBook
                 sqlConnect.Close();
             }
         }
+        public void AddPersonToCatagory()
+        {
+
+            SqlConnection sqlConnect = new SqlConnection(connectionString);
+            try
+            {
+                using (sqlConnect)
+                {
+                    sqlConnect.Open();
+
+                    SqlCommand com = new SqlCommand("AddToRelationship", sqlConnect);
+                    //query, sqlconnection
+                    com.CommandType = CommandType.StoredProcedure;
+                    Console.WriteLine("Enter FirstName");
+                    person.FirstName = Console.ReadLine();
+                    Console.WriteLine("Enter Catagory");
+                    person.Type = Console.ReadLine();
+
+                    com.Parameters.AddWithValue("@FirstName", person.FirstName);
+                    com.Parameters.AddWithValue("@Catagory", person.Type);
+
+                    int affRows = com.ExecuteNonQuery();    //returns num of affected rows after query execution
+                    sqlConnect.Close();
+                    if (affRows >= 1)
+                    {
+                        Console.WriteLine("Employee added successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Employee not added..");
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+            }
+            finally
+            {
+                sqlConnect.Close();
+            }
+        }
     }
 }
